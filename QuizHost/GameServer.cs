@@ -14,6 +14,7 @@ namespace QuizHost
         public TcpListener listener;
         public List<GameClient> Clients = new List<GameClient>();
         public string IP = "10.0.0.7";
+        public string IP2;
         public event EventHandler ClientConnected;
 
         public List<string> Questions = new List<string>();
@@ -23,6 +24,7 @@ namespace QuizHost
         public GameServer()
         {
             IP = Dns.GetHostAddresses(Dns.GetHostName())[1].ToString();
+            IP2 = GetPublicIpAddress();
             listener = new TcpListener(IPAddress.Parse(IP), 700);
             listener.Start();
             Test();
@@ -36,7 +38,7 @@ namespace QuizHost
         void AcceptSocket(IAsyncResult result)
         {
             TcpListener temp = (TcpListener)result.AsyncState;
-            GameClient client = new GameClient { ID = "Test" + DateTime.Now.Second.ToString(), Points = 0, socket = temp.EndAcceptSocket(result) };
+            GameClient client = new GameClient(this) { ID = "Test" + DateTime.Now.Second.ToString(), Points = 0, socket = temp.EndAcceptSocket(result) };
             Clients.Add(client);
             ClientConnected.Invoke(this, EventArgs.Empty);
             Test();
@@ -70,6 +72,14 @@ namespace QuizHost
             CurrentQuestion[3] = temp[2];
             CurrentQuestion[4] = temp[3];
             QuestionCount++;
+        }
+
+        private static string GetPublicIpAddress()
+        {
+            using (var client = new WebClient())
+            {
+                return client.DownloadString("http://ifconfig.me").Replace("\n", "");
+            }
         }
     }
 }

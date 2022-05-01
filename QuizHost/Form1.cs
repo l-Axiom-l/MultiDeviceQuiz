@@ -28,7 +28,7 @@ namespace QuizHost
         private void timer1_Tick(object sender, EventArgs e)
         {
             PlayerCount.Text = $"PlayerCount: {server.Clients.Count}";
-            Status.Text = server.listener.Server.Connected.ToString();
+            Status.Text = $"PublicIP: {server.IP2}";
             QuestionCounter.Text = $"QuestionCounter: {server.QuestionCount}/{server.Questions.Count}";
             IPAddress.Text = $"IPAddress: {server.IP}";
             QuestionText();
@@ -86,7 +86,7 @@ namespace QuizHost
 
             server.LoadQuiz(QuestionLoader.FileName);
             //Scoreboard.Items.Add(server.Questions[0]);
-            server.LoadQuestion(0);
+            server.LoadQuestion();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -98,6 +98,12 @@ namespace QuizHost
         {
             server.LoadQuestion(0);
             server.QuestionCount = 1;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Action action = server.Clients[0].SendQuestion;
+            action.Invoke();
         }
     }
 }
