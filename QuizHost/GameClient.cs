@@ -13,39 +13,42 @@ namespace QuizHost
         readonly Socket socket;
         public string ID;
         public int Points;
-        public string Message;
+        string Answer;
 
         public GameClient(GameServer server, Socket socket)
         {
             this.server = server;
             this.socket = socket;
-            Receive();
-            ID = Message;
+            ID = Receive();
             ID = ID.Replace("\0", "");
         }
 
-        public async void Receive()
+        public string Receive()
         {
-            byte[] data = new byte[100];
-            socket.Receive(data, 100, SocketFlags.None);
-            Message = Encoding.ASCII.GetString(data);
+            byte[] data = new byte[200];
+            socket.Receive(data, 200, SocketFlags.None);
+            return Encoding.ASCII.GetString(data);
         }
 
-        public async void SendQuestion()
+        public void SendQuestion()
         {
             string temp = server.Questions[server.QuestionCount - 1];
             temp = temp.Replace("_", "");
             socket.Send(Encoding.ASCII.GetBytes(temp));
+            Answer = Receive().Replace("\0", "");
+            CheckPoints();
         }
 
         public void CheckPoints()
         {
-
+            string answer = server.CurrentQuestion.Where(x => x.Contains("_")).ElementAt(0).Trim('_');
+            if (Answer == answer)
+                Points++;
         }
 
         public void Ready()
         {
-            socket.Send(Encoding.ASCII.GetBytes("Ready"));
+            socket.Send(Encoding.ASCII.GetBytes("_Ready"));
         }
     }
 }

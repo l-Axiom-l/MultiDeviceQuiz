@@ -71,9 +71,6 @@ namespace QuizHost
             CurrentQuestion[3] = temp[2];
             CurrentQuestion[4] = temp[3];
             QuestionCount++;
-
-            foreach (GameClient Client in Clients)
-                Client.SendQuestion();
         }
 
         private static string GetPublicIpAddress()
@@ -84,10 +81,15 @@ namespace QuizHost
             }
         }
 
-        public void StartGame()
+        public async void StartGame()
         {
             foreach (GameClient Client in Clients)
                 Client.Ready();
+
+            await Task.Delay(500);
+
+            foreach (GameClient Client in Clients)
+                Client.SendQuestion();
         }
     }
 }

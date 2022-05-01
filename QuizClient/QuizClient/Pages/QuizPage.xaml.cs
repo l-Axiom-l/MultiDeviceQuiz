@@ -13,12 +13,19 @@ namespace QuizClient.Pages
     public partial class QuizPage : ContentPage
     {
         ConnectPage Main;
+        LobbyPage Lobby;
 
-        public QuizPage(ConnectPage Page)
+        public QuizPage(ConnectPage Page, LobbyPage lobby)
         {
             InitializeComponent();
             Main = Page;
+            Lobby = lobby;
             LoadQuestion();
+
+            Answer1.Clicked += SendAnswer;
+            Answer2.Clicked += SendAnswer;
+            Answer3.Clicked += SendAnswer;
+            Answer4.Clicked += SendAnswer;
         }
 
         async void LoadQuestion()
@@ -36,6 +43,14 @@ namespace QuizClient.Pages
             Answer2.Text = temp[1];
             Answer3.Text = temp[2];
             Answer4.Text = temp[3];
+        }
+
+        void SendAnswer(object s, EventArgs e)
+        {
+            byte[] buffer = Encoding.ASCII.GetBytes((s as Button).Text);
+            Main.stream.Write(buffer, 0, buffer.Length);
+            Lobby.WaitForReady();
+            Navigation.PopAsync();
         }
     }
 }

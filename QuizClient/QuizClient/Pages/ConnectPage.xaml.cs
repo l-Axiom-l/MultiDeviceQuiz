@@ -14,13 +14,11 @@ namespace QuizClient.Pages
     {
         public TcpClient client;
         public NetworkStream stream;
-        
 
         public ConnectPage()
         {
             InitializeComponent();
             ConnectButton.Clicked += Connect;
-
         }
 
         void Connect(object s, EventArgs e)
@@ -30,8 +28,7 @@ namespace QuizClient.Pages
             stream = client.GetStream();
             byte[] buffer = Encoding.ASCII.GetBytes(Username.Text);
             stream.Write(buffer, 0, buffer.Length);
-            string t = Encoding.ASCII.GetString(buffer);
-            Navigation.PushAsync(new QuizPage(this));
+            Navigation.PushAsync(new LobbyPage(this));
         }
     }
 }

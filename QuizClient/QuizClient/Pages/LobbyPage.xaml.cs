@@ -17,18 +17,19 @@ namespace QuizClient.Pages
         {
             InitializeComponent();
             Main = Page;
-            Loop();
+            WaitForReady();
         }
 
-        async void Loop()
+        public async void WaitForReady()
         {
-            while (true)
+            byte[] data = new byte[50];
+            await Main.stream.ReadAsync(data, 0, 50);
+            if (Encoding.ASCII.GetString(data).Contains("Ready"))
             {
-            byte[] data = new byte[100];
-            await Main.stream.ReadAsync(data, 0, 100);
-            if (Encoding.ASCII.GetString(data) == "Ready")
-                await Navigation.PushAsync(new QuizPage(Main));
+                await Navigation.PushAsync(new QuizPage(Main, this));
             }
         }
+
+
     }
 }

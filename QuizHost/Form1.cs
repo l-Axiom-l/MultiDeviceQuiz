@@ -31,7 +31,19 @@ namespace QuizHost
             Status.Text = $"PublicIP: {server.IP2}";
             QuestionCounter.Text = $"QuestionCounter: {server.QuestionCount}/{server.Questions.Count}";
             IPAddress.Text = $"IPAddress: {server.IP}";
+
+            Players();
             QuestionText();
+        }
+
+        void Players()
+        {
+                Scoreboard.Items.Clear();
+            foreach (GameClient temp in server.Clients)
+            {
+                string player = temp.ID + $"({temp.Points})";
+                Scoreboard.Items.Add(player);
+            }
         }
 
         void QuestionText()
@@ -92,13 +104,13 @@ namespace QuizHost
         private void button2_Click(object sender, EventArgs e)
         {
             server.LoadQuestion();
+            server.StartGame();
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
             server.LoadQuestion(0);
             server.QuestionCount = 1;
-
             server.StartGame();
         }
 
