@@ -52,9 +52,9 @@ namespace QuizHost
             }
         }
 
-        void OnConnection(object s, EventArgs e)
+        async void OnConnection(object s, EventArgs e)
         {
-            GameClient client = server.Clients.Last();
+            GameClient client = server.Clients[0];
             Action safeWrite = delegate { Scoreboard.Items.Add(client.ID + $"({client.Points}) \n"); };
             Scoreboard.Invoke(safeWrite);
         }
@@ -98,6 +98,8 @@ namespace QuizHost
         {
             server.LoadQuestion(0);
             server.QuestionCount = 1;
+
+            server.StartGame();
         }
 
         private void button4_Click(object sender, EventArgs e)

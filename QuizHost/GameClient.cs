@@ -10,23 +10,25 @@ namespace QuizHost
     internal class GameClient
     {
         readonly GameServer server;
-        public Socket socket;
+        readonly Socket socket;
         public string ID;
         public int Points;
         public string Message;
 
-        public GameClient(GameServer server)
+        public GameClient(GameServer server, Socket socket)
         {
             this.server = server;
+            this.socket = socket;
             Receive();
             ID = Message;
+            ID = ID.Replace("\0", "");
         }
 
         public async void Receive()
         {
-            byte[] data = new byte[socket.ReceiveBufferSize];
-            socket.Receive(data, SocketFlags.None);
-            Message =  Encoding.ASCII.GetString(data);
+            byte[] data = new byte[100];
+            socket.Receive(data, 100, SocketFlags.None);
+            Message = Encoding.ASCII.GetString(data);
         }
 
         public async void SendQuestion()
@@ -39,6 +41,11 @@ namespace QuizHost
         public void CheckPoints()
         {
 
+        }
+
+        public void Ready()
+        {
+            socket.Send(Encoding.ASCII.GetBytes("Ready"));
         }
     }
 }

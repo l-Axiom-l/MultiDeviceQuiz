@@ -8,14 +8,15 @@ using Xamarin.Forms;
 using System.Net;
 using System.Net.Sockets;
 
-namespace QuizClient
+namespace QuizClient.Pages
 {
-    public partial class MainPage : ContentPage
+    public partial class ConnectPage : ContentPage
     {
-        TcpClient client;
-        NetworkStream stream;
+        public TcpClient client;
+        public NetworkStream stream;
+        
 
-        public MainPage()
+        public ConnectPage()
         {
             InitializeComponent();
             ConnectButton.Clicked += Connect;
@@ -29,6 +30,8 @@ namespace QuizClient
             stream = client.GetStream();
             byte[] buffer = Encoding.ASCII.GetBytes(Username.Text);
             stream.Write(buffer, 0, buffer.Length);
+            string t = Encoding.ASCII.GetString(buffer);
+            Navigation.PushAsync(new QuizPage(this));
         }
     }
 }

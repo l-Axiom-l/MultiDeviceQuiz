@@ -35,13 +35,12 @@ namespace QuizHost
             listener.BeginAcceptSocket(new AsyncCallback(AcceptSocket), listener);
         }
 
-        void AcceptSocket(IAsyncResult result)
+        async void AcceptSocket(IAsyncResult result)
         {
             TcpListener temp = (TcpListener)result.AsyncState;
-            GameClient client = new GameClient(this) { ID = "Test" + DateTime.Now.Second.ToString(), Points = 0, socket = temp.EndAcceptSocket(result) };
-            Clients.Add(client);
-            ClientConnected.Invoke(this, EventArgs.Empty);
+            Clients.Add(new GameClient(this, temp.EndAcceptSocket(result)));
             Test();
+            ClientConnected.Invoke(this, EventArgs.Empty);
         }
 
         public void LoadQuiz(string Path)
@@ -72,6 +71,9 @@ namespace QuizHost
             CurrentQuestion[3] = temp[2];
             CurrentQuestion[4] = temp[3];
             QuestionCount++;
+
+            foreach (GameClient Client in Clients)
+                Client.SendQuestion();
         }
 
         private static string GetPublicIpAddress()
@@ -80,6 +82,12 @@ namespace QuizHost
             {
                 return client.DownloadString("http://ifconfig.me").Replace("\n", "");
             }
+        }
+
+        public void StartGame()
+        {
+            foreach (GameClient Client in Clients)
+                Client.Ready();
         }
     }
 }

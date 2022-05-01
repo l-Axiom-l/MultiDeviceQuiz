@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="QuizClient.Pages.QuizPage">
+    <ContentPage.Content>
+        <Grid RowDefinitions="120,0,100,240,240,15" ColumnDefinitions="*,*,*,*,*,*,*,*" BackgroundColor="Black">
+            <ProgressBar x:Name="TimeLeft" Progress="0.5" ScaleY="5" TranslationY="-45" Margin="5, 57" IsVisible="true" Grid.Row="0" Grid.ColumnSpan="8" VerticalOptions="CenterAndExpand" BackgroundColor="Gray"></ProgressBar>
+            <Label x:Name="Question" TranslationY="-30" TextColor="White" FontSize="25" VerticalTextAlignment="Start" HorizontalTextAlignment="Center" Text="Das ist eine wichtige Frage um zu testen ob der Platz ausreicht" Grid.Row="2" Grid.RowSpan="3" Grid.ColumnSpan="8"></Label>
+            <Button x:Name="Answer1" Text="Antwort" BackgroundColor="Gray" Grid.ColumnSpan="4" Grid.Row="3"></Button>
+            <Button x:Name="Answer2" Text="Antwort" BackgroundColor="Gray" Grid.ColumnSpan="4" Grid.Row="4"></Button>
+            <Button x:Name="Answer3" Text="Antwort" BackgroundColor="Gray" Grid.Column="4" Grid.ColumnSpan="4" Grid.Row="3"></Button>
+            <Button x:Name="Answer4" Text="Antwort" BackgroundColor="Gray" Grid.Column="4" Grid.ColumnSpan="4" Grid.Row="4"></Button>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
