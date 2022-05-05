@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -47,7 +46,7 @@ namespace QuizClient.Pages
 
         void SendAnswer(object s, EventArgs e)
         {
-            byte[] buffer = Encoding.ASCII.GetBytes((s as Button).Text);
+            byte[] buffer = Encoding.ASCII.GetBytes("Answer/" + (s as Button).Text);
             Main.stream.Write(buffer, 0, buffer.Length);
             Lobby.WaitForReady();
             Navigation.PopAsync();

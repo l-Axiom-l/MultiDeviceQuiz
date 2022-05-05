@@ -26,7 +26,7 @@ namespace QuizClient.Pages
             client = new TcpClient();
             client.Connect(IPAddress.Parse(IP.Text), 700);
             stream = client.GetStream();
-            byte[] buffer = Encoding.ASCII.GetBytes(Username.Text);
+            byte[] buffer = Encoding.ASCII.GetBytes("ID/" + Username.Text);
             stream.Write(buffer, 0, buffer.Length);
             Navigation.PushAsync(new LobbyPage(this));
         }
