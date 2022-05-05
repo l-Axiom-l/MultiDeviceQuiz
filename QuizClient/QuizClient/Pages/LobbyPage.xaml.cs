@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Axiom.Sockets;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -29,9 +28,11 @@ namespace QuizClient.Pages
             //{
             //    await Navigation.PushAsync(new QuizPage(Main, this));
             //}
-
-            if (message.Message.Contains("Ready"))
-                await Navigation.PushAsync(new QuizPage(Main, this));
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                if (message.Message.Contains("Ready"))
+                    Navigation.PushAsync(new QuizPage(Main, this));
+            });
         }
 
 

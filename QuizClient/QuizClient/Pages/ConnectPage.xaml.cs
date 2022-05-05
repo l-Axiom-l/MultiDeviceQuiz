@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.Net;
 using System.Net.Sockets;
-using Axiom.Sockets;
 
 namespace QuizClient.Pages
 {
@@ -31,6 +30,7 @@ namespace QuizClient.Pages
                 client.Connect(IPAddress.Parse(IP.Text), 700);
                 stream = client.GetStream();
                 byte[] buffer = Encoding.ASCII.GetBytes("ID/" + Username.Text);
+                receiver = new Receiver(client.Client);
                 stream.Write(buffer, 0, buffer.Length);
                 await Navigation.PushAsync(new LobbyPage(this));
             }

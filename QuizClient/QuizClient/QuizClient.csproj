@@ -16,13 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="AxiomSoftware">
-      <HintPath>..\..\..\AxiomSoftware\AxiomSoftware\bin\Debug\net6.0\AxiomSoftware.dll</HintPath>
-      <CopyLocal>True</CopyLocal>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Pages\ConnectPage.xaml.cs">
       <DependentUpon>ConnectPage.xaml</DependentUpon>
     </Compile>
