@@ -31,7 +31,6 @@ namespace QuizHost
             Status.Text = $"PublicIP: {server.IP2}";
             QuestionCounter.Text = $"QuestionCounter: {server.QuestionCount}/{server.Questions.Count}";
             IPAddress.Text = $"IPAddress: {server.IP}";
-
             Players();
             QuestionText();
         }
@@ -96,8 +95,7 @@ namespace QuizHost
             if (result == DialogResult.Cancel|| result == DialogResult.Abort|| result == DialogResult.No)
                 return;
 
-            server.LoadQuiz(QuestionLoader.FileName);
-            //Scoreboard.Items.Add(server.Questions[0]);
+            server.LoadQuiz(QuestionLoader.FileName); //Loads all Questions
             server.LoadQuestion();
         }
 

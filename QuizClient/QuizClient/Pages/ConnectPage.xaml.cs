@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.Net;
 using System.Net.Sockets;
+using Axiom.Sockets;
 
 namespace QuizClient.Pages
 {
@@ -14,6 +15,7 @@ namespace QuizClient.Pages
     {
         public TcpClient client;
         public NetworkStream stream;
+        public Receiver receiver;
 
         public ConnectPage()
         {
@@ -21,14 +23,21 @@ namespace QuizClient.Pages
             ConnectButton.Clicked += Connect;
         }
 
-        void Connect(object s, EventArgs e)
+        async void Connect(object s, EventArgs e)
         {
-            client = new TcpClient();
-            client.Connect(IPAddress.Parse(IP.Text), 700);
-            stream = client.GetStream();
-            byte[] buffer = Encoding.ASCII.GetBytes("ID/" + Username.Text);
-            stream.Write(buffer, 0, buffer.Length);
-            Navigation.PushAsync(new LobbyPage(this));
+            try
+            {
+                client = new TcpClient();
+                client.Connect(IPAddress.Parse(IP.Text), 700);
+                stream = client.GetStream();
+                byte[] buffer = Encoding.ASCII.GetBytes("ID/" + Username.Text);
+                stream.Write(buffer, 0, buffer.Length);
+                await Navigation.PushAsync(new LobbyPage(this));
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }

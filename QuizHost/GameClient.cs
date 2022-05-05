@@ -16,6 +16,7 @@ namespace QuizHost
         public string ID;
         public int Points;
         string Answer;
+        public bool ReadyState = false;
 
         public GameClient(GameServer server, Socket socket)
         {
@@ -23,8 +24,6 @@ namespace QuizHost
             this.socket = socket;
             receiver = new Receiver(socket);
             receiver.MessageReceived += Receive;
-            //ID = Receive();
-            //ID = ID.Replace("\0", "");
         }
 
         void Receive(object s, MessageArgs m)
@@ -34,6 +33,7 @@ namespace QuizHost
             switch(Keyword)
             {
                 case "Answer":
+                    ReadyState = true;
                     Answer = text;
                     CheckPoints();
                     break;
@@ -44,21 +44,16 @@ namespace QuizHost
             }
         }
 
-
-        //public string Receive()
-        //{
-        //    byte[] data = new byte[200];
-        //    socket.Receive(data, 200, SocketFlags.None);
-        //    return Encoding.ASCII.GetString(data);
-        //}
-
         public void SendQuestion()
         {
             string temp = server.Questions[server.QuestionCount - 1];
             temp = temp.Replace("_", "");
             socket.Send(Encoding.ASCII.GetBytes(temp));
-            //Answer = Receive().Replace("\0", "");
-            //CheckPoints();
+        }
+
+        public void SendEnd()
+        {
+            socket.Send(Encoding.ASCII.GetBytes("End"));
         }
 
         public void CheckPoints()

@@ -48,7 +48,7 @@ namespace QuizClient.Pages
         {
             byte[] buffer = Encoding.ASCII.GetBytes("Answer/" + (s as Button).Text);
             Main.stream.Write(buffer, 0, buffer.Length);
-            Lobby.WaitForReady();
+            //Lobby.WaitForReady();
             Navigation.PopAsync();
         }
     }
