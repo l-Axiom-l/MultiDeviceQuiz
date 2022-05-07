@@ -41,6 +41,8 @@
             this.Answer1Label = new System.Windows.Forms.Label();
             this.QuestionLabel = new System.Windows.Forms.Label();
             this.ServerBox = new System.Windows.Forms.GroupBox();
+            this.PortText = new System.Windows.Forms.Label();
+            this.IPAddress = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
@@ -49,8 +51,6 @@
             this.PlayerCount = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.QuestionLoader = new System.Windows.Forms.OpenFileDialog();
-            this.IPAddress = new System.Windows.Forms.Label();
-            this.PortText = new System.Windows.Forms.Label();
             this.GameBox.SuspendLayout();
             this.ServerBox.SuspendLayout();
             this.SuspendLayout();
@@ -111,6 +111,7 @@
             this.button3.TabIndex = 9;
             this.button3.Text = "RemovePoint";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // AddPointButton
             // 
@@ -195,6 +196,26 @@
             this.ServerBox.Text = "ServerManagement";
             this.ServerBox.Enter += new System.EventHandler(this.ServerBox_Enter);
             // 
+            // PortText
+            // 
+            this.PortText.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.PortText.Location = new System.Drawing.Point(6, 114);
+            this.PortText.Name = "PortText";
+            this.PortText.Size = new System.Drawing.Size(301, 23);
+            this.PortText.TabIndex = 7;
+            this.PortText.Text = "Port: 700";
+            this.PortText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // IPAddress
+            // 
+            this.IPAddress.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.IPAddress.Location = new System.Drawing.Point(6, 91);
+            this.IPAddress.Name = "IPAddress";
+            this.IPAddress.Size = new System.Drawing.Size(301, 23);
+            this.IPAddress.TabIndex = 6;
+            this.IPAddress.Text = "IP Adress:";
+            this.IPAddress.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // button6
             // 
             this.button6.Location = new System.Drawing.Point(6, 182);
@@ -258,32 +279,12 @@
             // timer1
             // 
             this.timer1.Enabled = true;
-            this.timer1.Interval = 50;
+            this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // QuestionLoader
             // 
             this.QuestionLoader.FileName = "openFileDialog1";
-            // 
-            // IPAddress
-            // 
-            this.IPAddress.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.IPAddress.Location = new System.Drawing.Point(6, 91);
-            this.IPAddress.Name = "IPAddress";
-            this.IPAddress.Size = new System.Drawing.Size(301, 23);
-            this.IPAddress.TabIndex = 6;
-            this.IPAddress.Text = "IP Adress:";
-            this.IPAddress.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // PortText
-            // 
-            this.PortText.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.PortText.Location = new System.Drawing.Point(6, 114);
-            this.PortText.Name = "PortText";
-            this.PortText.Size = new System.Drawing.Size(301, 23);
-            this.PortText.TabIndex = 7;
-            this.PortText.Text = "Port: 700";
-            this.PortText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Form1
             // 

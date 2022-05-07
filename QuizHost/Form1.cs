@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,6 +18,7 @@ namespace QuizHost
         public Form1()
         {
             InitializeComponent();
+            Application.ApplicationExit += OnExit;
             server = new GameServer();
             server.ClientConnected += OnConnection;
             answers[0] = Answer1Label;
@@ -37,33 +39,40 @@ namespace QuizHost
 
         void Players()
         {
-                Scoreboard.Items.Clear();
+            server.Clients = server.Clients.OrderByDescending(x => x.Points).ToList();
+            var index = Scoreboard.SelectedIndex;
+            Scoreboard.Items.Clear();
             foreach (GameClient temp in server.Clients)
             {
                 string player = temp.ID + $"({temp.Points})";
                 Scoreboard.Items.Add(player);
             }
+            if (Scoreboard.SelectedIndex < Scoreboard.Items.Count)
+                Scoreboard.SelectedIndex = index;
+            else Scoreboard.SelectedIndex = -1;
+
+            server.Clients.ForEach(x => x.SendScore());
         }
 
         void QuestionText()
         {
-            if(server.CurrentQuestion[0] == null)
+            if (server.CurrentQuestion[0] == null)
                 return;
 
             QuestionLabel.Text = server.CurrentQuestion[0];
 
             int Index = 1;
-            foreach(Label answer in answers)
+            foreach (Label answer in answers)
             {
-                answer.Text = server.CurrentQuestion[Index].Trim(new char[] {'_', '.'});
-                if(server.CurrentQuestion[Index].Contains("_"))
+                answer.Text = server.CurrentQuestion[Index].Trim(new char[] { '_', '.' });
+                if (server.CurrentQuestion[Index].Contains("_"))
                     answer.BackColor = Color.Green;
                 else answer.BackColor = Color.Red;
                 Index++;
             }
         }
 
-        async void OnConnection(object s, EventArgs e)
+        void OnConnection(object s, EventArgs e)
         {
             GameClient client = server.Clients[0];
             Action safeWrite = delegate { Scoreboard.Items.Add(client.ID + $"({client.Points}) \n"); };
@@ -72,12 +81,15 @@ namespace QuizHost
 
         private void KickButton_Click(object sender, EventArgs e)
         {
-
+            string ID = Scoreboard.GetItemText(Scoreboard.SelectedItem).Split('(')[0];
+            Scoreboard.SelectedIndex = -1;
+            server.Clients.Where(x => x.ID == ID).ElementAt(0).Disconnect("You were kicked by the Host");
         }
 
         private void AddPointButton_Click(object sender, EventArgs e)
         {
-
+            string ID = Scoreboard.GetItemText(Scoreboard.SelectedItem).Split('(')[0];
+            server.Clients.Where(x => x.ID == ID).ElementAt(0).Points++;
         }
 
         private void ServerBox_Enter(object sender, EventArgs e)
@@ -90,9 +102,9 @@ namespace QuizHost
             QuestionLoader.Title = "Load Question";
             QuestionLoader.Multiselect = false;
             QuestionLoader.CheckFileExists = true;
-            DialogResult result =  QuestionLoader.ShowDialog();
+            DialogResult result = QuestionLoader.ShowDialog();
 
-            if (result == DialogResult.Cancel|| result == DialogResult.Abort|| result == DialogResult.No)
+            if (result == DialogResult.Cancel || result == DialogResult.Abort || result == DialogResult.No)
                 return;
 
             server.LoadQuiz(QuestionLoader.FileName); //Loads all Questions
@@ -116,6 +128,20 @@ namespace QuizHost
         {
             Action action = server.Clients[0].SendQuestion;
             action.Invoke();
+        }
+
+        async void OnExit(object s, EventArgs e)
+        {
+            await Task.Run(() =>
+            {
+                server.Clients.ForEach(x => x.Disconnect());
+            });
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string ID = Scoreboard.GetItemText(Scoreboard.SelectedItem).Split('(')[0];
+            server.Clients.Where(x => x.ID == ID).ElementAt(0).Points--;
         }
     }
 }
