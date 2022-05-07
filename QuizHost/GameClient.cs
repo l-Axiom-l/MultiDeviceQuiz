@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Axiom;
+using System.IO;
 
 namespace QuizHost
 {
@@ -30,7 +31,7 @@ namespace QuizHost
         {
             string text = m.Message.Split('/')[1];
             string Keyword = m.Message.Split('/')[0];
-            switch(Keyword)
+            switch (Keyword)
             {
                 case "Answer":
                     ReadyState = true;
@@ -41,6 +42,12 @@ namespace QuizHost
                 case "ID":
                     ID = text;
                     break;
+
+                case "Disconnect":
+                    server.Clients.Remove(this);
+                    receiver.Disconnect();
+                    socket.Close();
+                    break;
             }
         }
 
@@ -48,12 +55,29 @@ namespace QuizHost
         {
             string temp = server.Questions[server.QuestionCount - 1];
             temp = temp.Replace("_", "");
-            socket.Send(Encoding.ASCII.GetBytes(temp));
+            socket.Send(Encoding.ASCII.GetBytes("Question/" + temp));
         }
 
         public void SendEnd()
         {
-            socket.Send(Encoding.ASCII.GetBytes("End"));
+            socket.Send(Encoding.ASCII.GetBytes($"End/Points: {Points}"));
+        }
+
+        public void SendScore()
+        {
+            if (ID.Length == 0)
+                return;
+
+            string temp = "Score/";
+            int l = 10;
+
+            if(server.Clients.Count < 9)
+                l = server.Clients.Count;
+
+            for (int i = 0; i < l; i++)
+                temp += $"{server.Clients[i].ID}({server.Clients[i].Points})*";
+
+            socket.Send(Encoding.ASCII.GetBytes(temp));
         }
 
         public void CheckPoints()
@@ -66,6 +90,15 @@ namespace QuizHost
         public void Ready()
         {
             socket.Send(Encoding.ASCII.GetBytes("Ready"));
+        }
+
+        public void Disconnect(string Message = "null")
+        {
+            receiver.MessageReceived -= Receive;
+            receiver = null;
+            socket.Send(Encoding.ASCII.GetBytes($"Disconnect/{Message}"));
+            socket.Disconnect(false);
+            server.Clients.Remove(this);
         }
     }
 }
