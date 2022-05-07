@@ -12,11 +12,14 @@ namespace Axiom
     {
         public event EventHandler<MessageArgs> MessageReceived;
         public Socket socket;
+        public Thread LoopThread;
 
         public Receiver(Socket socket)
         {
             this.socket = socket;
-            new Thread(Loop).Start();
+            MessageReceived += ReceiveEvent;
+            LoopThread = new Thread(Loop) { IsBackground = false, Name = "TcpReceiver" };
+            LoopThread.Start();
         }
 
         public void Loop()
@@ -29,9 +32,28 @@ namespace Axiom
                 MessageReceived.Invoke(this, message);
             }
         }
+
+        void ReceiveEvent(object s, MessageArgs m)
+        {
+            
+        }
+
+        public void Disconnect()
+        {
+            try
+            {
+                LoopThread.Abort();
+                socket.Disconnect(false);
+                socket.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 
-    public class MessageArgs:EventArgs
+    public class MessageArgs : EventArgs
     {
         public string Message { get; private set; }
 
