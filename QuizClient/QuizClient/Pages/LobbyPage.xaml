@@ -1,9 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="QuizClient.Pages.LobbyPage">
+             x:Class="QuizClient.Pages.LobbyPage"
+             NavigationPage.HasBackButton="False">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="Back" Text="Home" Order="Default"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout x:Name="Layout" BackgroundColor="Black">
+            <Label x:Name="IDText" TextColor="White" Margin="10,0" BackgroundColor="Black" FontSize="35" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="ID"></Label>
+            <Label x:Name="Points" TextColor="White" Margin="10,0" BackgroundColor="Black" FontSize="35" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="Points"></Label>
+            <Label TextColor="Black" BackgroundColor="Black" FontSize="25" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" ></Label>
+            <Label TextColor="White" Text="Scoreboard" FontSize="45" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" ></Label>
+            <Label x:Name="P1" TextColor="White" BackgroundColor="Gray" FontSize="35" Margin="10,0" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text=" "></Label>
+            <Label x:Name="P2" TextColor="White" BackgroundColor="Gray" FontSize="35" Margin="10,0" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text=" "></Label>
+            <Label x:Name="P3" TextColor="White" BackgroundColor="Gray" FontSize="35" Margin="10,0" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text=" "></Label>
+            <Label x:Name="P4" TextColor="White" BackgroundColor="Gray" FontSize="35" Margin="10,0" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text=" "></Label>
+            <Label x:Name="P5" TextColor="White" BackgroundColor="Gray" FontSize="35" Margin="10,0" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text=" "></Label>
+            <Label x:Name="P6" TextColor="White" BackgroundColor="Gray" FontSize="35" Margin="10,0" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text=" "></Label>
+            <Label x:Name="P7" TextColor="White" BackgroundColor="Gray" FontSize="35" Margin="10,0" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text=" "></Label>
+            <Label x:Name="P8" TextColor="White" BackgroundColor="Gray" FontSize="35" Margin="10,0" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text=" "></Label>
+            <Label x:Name="P9" TextColor="White" BackgroundColor="Gray" FontSize="35" Margin="10,0" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text=" "></Label>
+            <Label x:Name="P10" TextColor="White" BackgroundColor="Gray" FontSize="35" Margin="10,0" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text=" "></Label>
 
         </StackLayout>
     </ContentPage.Content>

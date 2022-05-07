@@ -10,7 +10,7 @@ namespace QuizClient
         public App()
         {
             InitializeComponent();
-            MainPage = new NavigationPage(new ConnectPage());
+            MainPage = new NavigationPage(new ConnectPage() { });
         }
 
         protected override void OnStart()

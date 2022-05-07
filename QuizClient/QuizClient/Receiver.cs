@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace QuizClient
+namespace Axiom
 {
     public class Receiver
     {
         public event EventHandler<MessageArgs> MessageReceived;
         public Socket socket;
+        public Thread LoopThread;
 
         public Receiver(Socket socket)
         {
             this.socket = socket;
-            new Thread(Loop).Start();
+            LoopThread = new Thread(Loop) { IsBackground = false, Name = "TcpReceiver" };
+            LoopThread.Start();
         }
 
         public void Loop()
@@ -29,9 +31,23 @@ namespace QuizClient
                 MessageReceived.Invoke(this, message);
             }
         }
+
+        public void Disconnect()
+        {
+            try
+            {
+                LoopThread.Abort();
+                socket.Disconnect(false);
+                socket.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 
-    public class MessageArgs:EventArgs
+    public class MessageArgs : EventArgs
     {
         public string Message { get; private set; }
 
@@ -40,4 +56,6 @@ namespace QuizClient
             this.Message = Message;
         }
     }
+
+
 }

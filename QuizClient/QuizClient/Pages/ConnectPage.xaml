@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="QuizClient.Pages.ConnectPage">
+             x:Class="QuizClient.Pages.ConnectPage"
+             NavigationPage.HasBackButton="False">
 
     <Grid ColumnDefinitions ="*,*,*,*" RowDefinitions="0,*,*,*,*,*,*,*,*,*" RowSpacing="0" BackgroundColor="Black">
         <Label Grid.Row="1" Grid.ColumnSpan="4" TextColor="White" Text="MultiDeviceQuiz" FontSize="40" HorizontalOptions="Center" VerticalOptions="Center" ></Label>
