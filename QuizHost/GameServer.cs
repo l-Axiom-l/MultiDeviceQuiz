@@ -30,7 +30,7 @@ namespace QuizHost
             listener = new TcpListener(IPAddress.Parse(IP), 700);
             listener.Start();
             StartSocket();
-            new Thread(CheckForReady).Start();
+            new Thread(CheckForReady) { IsBackground = true, Name = "CheckReady"}.Start();
         }
 
         void StartSocket()
@@ -106,7 +106,7 @@ namespace QuizHost
                 Client.SendQuestion();
         }
 
-        public void CheckForReady()
+        public async void CheckForReady()
         {
             while(true)
             {
@@ -119,6 +119,8 @@ namespace QuizHost
                     LoadQuestion();
                     StartGame();
                 }
+
+                await Task.Delay(500);
             }
         }
     }
