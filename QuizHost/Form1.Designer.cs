@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.Scoreboard = new System.Windows.Forms.ListBox();
             this.KickButton = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -293,8 +294,9 @@
             this.ClientSize = new System.Drawing.Size(695, 471);
             this.Controls.Add(this.ServerBox);
             this.Controls.Add(this.GameBox);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "QuizHost";
             this.GameBox.ResumeLayout(false);
             this.ServerBox.ResumeLayout(false);
             this.ResumeLayout(false);
